@@ -1,4 +1,4 @@
-package java_day2;
+package java_day3;
 
 import java.util.Scanner;
 
@@ -43,6 +43,9 @@ public class Main {
 
         //checking for mid of loop
         linkedList.findMiddleOfLoop();
+
+        //find nth element from the list
+        linkedList.findNthFromLast(4);
 
     }
 }
