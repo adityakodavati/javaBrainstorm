@@ -1,4 +1,4 @@
-package com.grid.CrudOperation.entity;
+package com.grid.crudoperation.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

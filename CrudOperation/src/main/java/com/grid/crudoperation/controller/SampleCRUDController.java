@@ -1,8 +1,10 @@
-package com.grid.CrudOperation.controller;
+package com.grid.crudoperation.controller;
 
 
-import com.grid.CrudOperation.entity.NameEntity;
-import com.grid.CrudOperation.repository.CRUDRepsository;
+import com.grid.crudoperation.customAnnotation.LogUsingAnnaotation;
+import com.grid.crudoperation.entity.NameEntity;
+import com.grid.crudoperation.repository.CRUDRepsository;
+import lombok.CustomLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +37,12 @@ public class SampleCRUDController {
     }
 
     @GetMapping
+    @LogUsingAnnaotation
     public ResponseEntity<List<NameEntity>> getAllNames() throws NullPointerException
     {
         List<NameEntity> namesList = repsository.findAll();
        String aditya = null;
-        System.out.println(aditya.length());
+        //System.out.println(aditya.length());
         return new ResponseEntity<>(namesList, HttpStatus.OK);
     }
 
