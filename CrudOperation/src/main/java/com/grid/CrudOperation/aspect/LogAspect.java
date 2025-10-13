@@ -27,11 +27,17 @@ public class LogAspect {
     //using ProceedingJoinPoint as it has control over execution missing with JoinPoint, it cant control.
     @Around("execution (* com.grid.CrudOperation.controller.SampleCRUDController.getAllNames())")
     public Object logAtAnyPoint(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+        Long startTime = System.currentTimeMillis();
+
         logger.info("Input arguments at method start :" + proceedingJoinPoint.getArgs());
 
         Object result = proceedingJoinPoint.proceed();
 
         logger.info("At the end of the method :");
+
+        Long endTime = System.currentTimeMillis();
+        logger.info("Total execution time {}" + (endTime-startTime));
         return result;
     }
 
@@ -45,6 +51,22 @@ public class LogAspect {
     @AfterThrowing(pointcut = "execution (* com.grid.CrudOperation.controller.SampleCRUDController.getAllNames())", throwing = "ex")
     public void afterReturningAdvice(Exception ex) {
         logger.info("<<>>Exception :" + ex);
+    }
+
+    //Logging everymethod inside a class
+    @Around("execution (* com.grid.CrudOperation.controller.SampleCRUDController.*(..))")
+    public Object loggingEveryMethod(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Long startTime = System.currentTimeMillis();
+
+        logger.info("Input arguments at method start :" + proceedingJoinPoint.getArgs());
+
+        Object result = proceedingJoinPoint.proceed();
+
+        logger.info("At the end of the method :");
+
+        Long endTime = System.currentTimeMillis();
+        logger.info("Total execution time {}" + (endTime-startTime));
+        return result;
     }
 
 }
