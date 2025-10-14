@@ -1,10 +1,9 @@
 package com.grid.crudoperation.controller;
 
 
-import com.grid.crudoperation.customAnnotation.LogUsingAnnaotation;
+import com.grid.crudoperation.customAnnotation.*;
 import com.grid.crudoperation.entity.NameEntity;
 import com.grid.crudoperation.repository.CRUDRepsository;
-import lombok.CustomLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,35 +20,34 @@ public class SampleCRUDController {
     CRUDRepsository repsository;
 
     @PostMapping("/addStrign")
-    public ResponseEntity<NameEntity>addToDB(@RequestBody NameEntity data)
-    {
-     NameEntity savedValue =  repsository.save(data);
+    public ResponseEntity<NameEntity> addToDB(@RequestBody NameEntity data) {
+        NameEntity savedValue = repsository.save(data);
 
-     return ResponseEntity.ok(savedValue);
+        return ResponseEntity.ok(savedValue);
     }
 
     @GetMapping("/getName/{name}")
-    public ResponseEntity<NameEntity> getNameById(@PathVariable String name)
-    {
-      NameEntity nameEntity =  repsository.findByName(name);
+    public ResponseEntity<NameEntity> getNameById(@PathVariable String name) {
+        NameEntity nameEntity = repsository.findByName(name);
 
-      return new ResponseEntity<>(nameEntity, HttpStatus.OK);
+        return new ResponseEntity<>(nameEntity, HttpStatus.OK);
     }
 
     @GetMapping
-    @LogUsingAnnaotation
-    public ResponseEntity<List<NameEntity>> getAllNames() throws NullPointerException
-    {
+    //@LogUsingAnnaotation
+    //@LogAfter
+    @LogAfterReturning
+    public ResponseEntity<List<NameEntity>> getAllNames() throws NullPointerException {
         List<NameEntity> namesList = repsository.findAll();
-       String aditya = null;
-        //System.out.println(aditya.length());
+
+/*        String aditya = null;
+        System.out.println(aditya.length());*/
         return new ResponseEntity<>(namesList, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id)
-    {
+    public void deleteById(@PathVariable Long id) {
         repsository.deleteById(id);
     }
 

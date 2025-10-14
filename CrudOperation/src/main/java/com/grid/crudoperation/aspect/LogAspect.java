@@ -1,5 +1,6 @@
 package com.grid.crudoperation.aspect;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
@@ -28,13 +29,13 @@ public class LogAspect {
     @Around("execution (* com.grid.crudoperation.controller.SampleCRUDController.getAllNames())")
     public Object loggingAtSpecificMethod(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Long startTime = System.currentTimeMillis();
-        logger.info("Input arguments at method start : {}", proceedingJoinPoint.getArgs());
+        logger.info("Input arguments at method start : {}", proceedingJoinPoint.getArgs().toString());
 
         Object result = proceedingJoinPoint.proceed();
 
         logger.info("At the end of the method :");
         Long endTime = System.currentTimeMillis();
-        logger.info("Total execution time {}", (endTime - startTime));
+        logger.info("Total execution time {} ms", (endTime - startTime));
 
         return result;
     }
@@ -42,17 +43,16 @@ public class LogAspect {
     //logging the retun object using @AfterReturning
     @AfterReturning(pointcut = "execution (* com.grid.crudoperation.controller.SampleCRUDController.getAllNames())", returning = "result")
     public void afterReturningAdvice(Object result) {
-        logger.info("Returning object : {}", result);
+        logger.info("Returning object : {}", result.toString());
     }
 
     //logging the Exception object thrown
     @AfterThrowing(pointcut = "execution (* com.grid.crudoperation.controller.SampleCRUDController.getAllNames())", throwing = "ex")
     public void afterReturningAdvice(Exception ex) {
-        logger.info("Exception : %s", ex);
+        logger.info("Exception : {}", ex.getMessage());
     }
 
     //Logging everymethod inside a class
-/*
     @Around("execution (* com.grid.CrudOperation.controller.SampleCRUDController.*(..))")
     public Object loggingEveryMethod(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
@@ -65,8 +65,7 @@ public class LogAspect {
 
         return result;
     }
-*/
-
+    //<--> below are using custom annotations
     //Custom annoatation for method logs
     @Around("@annotation (com.grid.crudoperation.customAnnotation.LogUsingAnnaotation)")
     public Object logUsingAnnotation(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -81,6 +80,28 @@ public class LogAspect {
         logger.info("Time taken for method execution {} is {} ms", methodName, (endTime - startTime));
 
         return result;
+    }
+
+    @After("@annotation (com.grid.crudoperation.customAnnotation.LogAfter)")
+    public void logAtAfterUsingAnnotation() {
+        logger.info("Using @After with help of custom Annotation");
+    }
+
+    @Before("@annotation (com.grid.crudoperation.customAnnotation.LogBefore)")
+    public void logAtBeforeUsingAnnotation() {
+        logger.info("Using @Before with help of custom Annotation");
+    }
+
+    @AfterReturning(pointcut = "@annotation(com.grid.crudoperation.customAnnotation.LogAfterReturning)", returning = "result")
+    public void logAfterReturning(JoinPoint joinPoint, Object result) {
+        logger.info("Using @AfterReturning method name {}", joinPoint.getSignature().toShortString());
+        logger.info("Returned Object : {}", result);
+    }
+
+    @AfterThrowing(pointcut = "@annotation(com.grid.crudoperation.customAnnotation.LogAfterThrowing)", throwing = "ex")
+    public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
+        logger.info("Method called {}:", joinPoint.getSignature().toShortString());
+        logger.info("Exception occured : {}", ex.getMessage());
     }
 
 }
