@@ -2790,3 +2790,8 @@ java.lang.NullPointerException: Cannot invoke "String.length()" because "aditya"
 2025-10-14T14:46:06.131+05:30  INFO 53521 --- [CrudOperation] [http-nio-8085-exec-1] c.grid.crudoperation.aspect.LogAspect    : After method execution
 2025-10-14T14:46:06.131+05:30  INFO 53521 --- [CrudOperation] [http-nio-8085-exec-1] c.grid.crudoperation.aspect.LogAspect    : At the end of the method :
 2025-10-14T14:46:06.131+05:30  INFO 53521 --- [CrudOperation] [http-nio-8085-exec-1] c.grid.crudoperation.aspect.LogAspect    : Total execution time 78
+2025-10-14T15:52:26.942+05:30  INFO 53521 --- [CrudOperation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-10-14T15:52:26.950+05:30  INFO 53521 --- [CrudOperation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-10-14T15:52:26.958+05:30  INFO 53521 --- [CrudOperation] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-10-14T15:52:26.961+05:30  INFO 53521 --- [CrudOperation] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-10-14T15:52:26.966+05:30  INFO 53521 --- [CrudOperation] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
