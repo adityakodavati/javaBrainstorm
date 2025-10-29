@@ -93,4 +93,19 @@ public class Sample {
                 .concatMap(this::splitStringWithDelay)
                 .log();
     }
+
+    //using flatmap with Mono
+    public Mono<List<String>> listMono()
+    {
+        return  Mono.just("Aditya")
+                .map(String::toUpperCase)
+                .flatMap(this::monoOfList).log();
+    }
+
+    private Mono<List<String>> monoOfList(String s) {
+
+        var charArray = s.split("");
+
+       return Mono.just(List.of(charArray));
+    }
 }

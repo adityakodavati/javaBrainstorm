@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.util.List;
+
 
 class SampleTest {
 
@@ -12,12 +14,11 @@ class SampleTest {
 
     @Test
     @DisplayName("check for flux")
-    void returnFlux()
-    {
+    void returnFlux() {
         //given
 
         //when
-        var flux =  sample.returnFlux();
+        var flux = sample.returnFlux();
 
         //then
         StepVerifier.create(flux)
@@ -29,8 +30,7 @@ class SampleTest {
 
     @Test
     @DisplayName("Test for Mono")
-    void returnMono()
-    {
+    void returnMono() {
         var mono = sample.returnMono();
 
         StepVerifier.create(mono)
@@ -42,8 +42,7 @@ class SampleTest {
 
     @Test
     @DisplayName("Test of Filter and Map()")
-    void opWithMap()
-    {
+    void opWithMap() {
         //when
         var flux = sample.returnFluxWithMapFilter(4);
 
@@ -59,7 +58,7 @@ class SampleTest {
         var charArray = sample.returnFluxWithFlatMapFilter(4);
 
         StepVerifier.create(charArray)
-               // .expectNext("A","d","i","t","y","a")
+                // .expectNext("A","d","i","t","y","a")
                 .expectNextCount(6)
                 .verifyComplete()
         ;
@@ -79,6 +78,7 @@ class SampleTest {
     }
 
     @Test
+    @DisplayName("Test for concatmap with delay")
     void returnFluxWithConcatMapFilterWithDelay() {
 
         var carArray = sample.returnFluxWithConcatMapFilterWithDelay(3);
@@ -86,6 +86,16 @@ class SampleTest {
         StepVerifier.create(carArray)
                 .expectNextCount(14)
                 .verifyComplete();
+
+    }
+
+    @Test
+    @DisplayName("Test for monoList using flatmap")
+    void listMono() {
+
+        var monoList = sample.listMono();
+
+        StepVerifier.create(monoList).expectNext(List.of("A","D","I","T","Y","A")).verifyComplete();
 
     }
 }
