@@ -7,8 +7,14 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 public class Sample {
+    int stringLength;
+
+    //to reduce use of same function over different methods
+    Function<Flux<String>,Flux<String>> transformArg = stringFlux -> stringFlux.map(String::toUpperCase).filter(s -> s.length() > stringLength);
+
     public static void main(String[] args) {
 
 
@@ -80,6 +86,7 @@ public class Sample {
     public Flux<String> returnFluxWithFlatMapFilterWithDelay(int stringLength) {
 
         return returnFlux()
+                .map(String::toUpperCase)
                 .filter(s -> s.length() > stringLength)
                 .flatMap(this::splitStringWithDelay)
                 .log();
@@ -88,11 +95,30 @@ public class Sample {
     //using concatmap() with filter() introduced delay which preserves order.
     public Flux<String> returnFluxWithConcatMapFilterWithDelay(int stringLength) {
 
+        //as transform takes Functional Interface as a (function) as a args
+        Function<Flux<String>, Flux<String>> functionasArgToTransform = name -> name.map(String::toUpperCase)
+                .filter(s -> s.length() > stringLength);
+
         return returnFlux()
+                .map(String::toUpperCase)
                 .filter(s -> s.length() > stringLength)
                 .concatMap(this::splitStringWithDelay)
                 .log();
     }
+
+    //Op with Transform()
+    public Flux<String> opWithTransform(int stringLength) {
+
+        //as transform takes Functional Interface as a (function) as a args
+        Function<Flux<String>, Flux<String>> functionasArgToTransform = name -> name.map(String::toUpperCase)
+                .filter(s -> s.length() > stringLength);
+
+        return returnFlux()
+                .transform(functionasArgToTransform)
+                .concatMap(this::splitStringWithDelay)
+                .log();
+    }
+
 
     //using flatmap with Mono
     public Mono<List<String>> listMono()
@@ -108,4 +134,24 @@ public class Sample {
 
        return Mono.just(List.of(charArray));
     }
+
+
+    //using flatmapMany with Mono
+    public Flux<List<String>> listMonoToFluxWithFlatmapMany()
+    {
+        return  Mono.just("Aditya")
+                .map(String::toUpperCase)
+                .flatMapMany(this::monoOfListToFlux)
+                .log();
+    }
+
+
+    private Flux<List<String>> monoOfListToFlux(String s) {
+
+        var charArray = s.split("");
+
+        return Flux.just(List.of(charArray));
+    }
+
+
 }

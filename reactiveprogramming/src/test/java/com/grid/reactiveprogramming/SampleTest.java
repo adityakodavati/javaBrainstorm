@@ -2,7 +2,6 @@ package com.grid.reactiveprogramming;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -97,5 +96,23 @@ class SampleTest {
 
         StepVerifier.create(monoList).expectNext(List.of("A","D","I","T","Y","A")).verifyComplete();
 
+    }
+
+    @Test
+    @DisplayName("Test for Mono with flatmap")
+    void testListMono() {
+
+        var listMono = sample.listMono();
+
+        StepVerifier.create(listMono).expectNext(List.of("A","D","I","T","Y","A")).verifyComplete();
+
+    }
+
+    @Test
+    @DisplayName("Test for Mono with flatmapMany")
+    void listMonoToFluxWithFlatmapMany() {
+        var listMono = sample.listMonoToFluxWithFlatmapMany();
+
+        StepVerifier.create(listMono).expectNext(List.of("A","D","I","T","Y","A")).verifyComplete();
     }
 }
