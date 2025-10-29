@@ -39,4 +39,53 @@ class SampleTest {
                 .verifyComplete();
 
     }
+
+    @Test
+    @DisplayName("Test of Filter and Map()")
+    void opWithMap()
+    {
+        //when
+        var flux = sample.returnFluxWithMapFilter(4);
+
+        StepVerifier.create(flux)
+                .expectNext("6-Aditya")
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Test For FlatMap")
+    void returnFluxWithFlatMapFilter() {
+
+        var charArray = sample.returnFluxWithFlatMapFilter(4);
+
+        StepVerifier.create(charArray)
+               // .expectNext("A","d","i","t","y","a")
+                .expectNextCount(6)
+                .verifyComplete()
+        ;
+
+    }
+
+    @Test
+    @DisplayName("Test to check flat map with delay ")
+    void returnFluxWithFlatMapFilterWithDelay() {
+
+        var charArray = sample.returnFluxWithFlatMapFilterWithDelay(3);
+
+        StepVerifier.create(charArray)
+                .expectNextCount(14)
+                .verifyComplete();
+
+    }
+
+    @Test
+    void returnFluxWithConcatMapFilterWithDelay() {
+
+        var carArray = sample.returnFluxWithConcatMapFilterWithDelay(3);
+
+        StepVerifier.create(carArray)
+                .expectNextCount(14)
+                .verifyComplete();
+
+    }
 }
